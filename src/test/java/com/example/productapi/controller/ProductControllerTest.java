@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @WebMvcTest(ProductController.class)
 public class ProductControllerTest {
@@ -48,5 +51,56 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("MacBook"));
     }
+    @Test
+    void shouldCreateProduct() throws Exception {
+        Product newProduct = new Product("iPad", "Tablet", 799.0);
+
+        when(productRepository.save(any(Product.class))).thenReturn(newProduct);
+
+        mockMvc.perform(post("/api/products")
+                        .contentType("application/json")
+                        .content("""
+                {
+                  "name": "iPad",
+                  "description": "Tablet",
+                  "price": 799.0
+                }
+            """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("iPad"))
+                .andExpect(jsonPath("$.price").value(799.0));
+    }
+    @Test
+    void shouldUpdateProduct() throws Exception {
+        Product existing = new Product("iPad", "Tablet", 799.0);
+        existing.setId("p1");
+
+        Product updated = new Product("iPad Pro", "Tablet Pro", 999.0);
+        updated.setId("p1");
+
+        when(productRepository.findById("p1")).thenReturn(Optional.of(existing));
+        when(productRepository.save(any(Product.class))).thenReturn(updated);
+
+        mockMvc.perform(put("/api/products/p1")
+                        .contentType("application/json")
+                        .content("""
+                {
+                  "name": "iPad Pro",
+                  "description": "Tablet Pro",
+                  "price": 999.0
+                }
+            """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("iPad Pro"))
+                .andExpect(jsonPath("$.price").value(999.0));
+    }
+    @Test
+    void shouldDeleteProduct() throws Exception {
+        when(productRepository.existsById("p1")).thenReturn(true);
+
+        mockMvc.perform(delete("/api/products/p1"))
+                .andExpect(status().isNoContent());
+    }
+
 
 }
