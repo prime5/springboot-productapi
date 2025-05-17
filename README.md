@@ -1,4 +1,3 @@
-# springboot-productapi
 # Spring Boot Product API
 
 A RESTful API built with Spring Boot and MongoDB for managing products. This application demonstrates CRUD operations using Spring Data MongoDB and follows clean layered architecture.
@@ -42,6 +41,26 @@ Edit
   "description": "iPhone 15 Pro",
   "price": 1299.99
 }
+
+Authentication
+Basic Auth Users
+Username	Password	Role
+admin	secret123	ADMIN
+guest	guest123	USER
+
+GET endpoints are public
+
+POST, PUT, and DELETE require ADMIN role
+
+Example Authenticated Request
+bash
+Copy
+Edit
+curl -X POST http://localhost:8080/api/products \
+  -u admin:secret123 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Secured Product", "description": "Protected", "price": 199.99}'
+
 Testing
 Unit tests are written for all CRUD endpoints using:
 
