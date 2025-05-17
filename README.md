@@ -42,12 +42,28 @@ Edit
   "description": "iPhone 15 Pro",
   "price": 1299.99
 }
-Database
-MongoDB must be running locally
+Testing
+Unit tests are written for all CRUD endpoints using:
 
-Database name: productdb
+JUnit 5
+
+Mockito (@MockBean)
+
+Spring Boot's @WebMvcTest + MockMvc
+
+Run tests:
+bash
+Copy
+Edit
+mvn test
+MongoDB Setup
+Host: localhost:27017
+
+Database: productdb
 
 Collection: products
+
+You can inspect data using MongoDB Compass or shell.
 
 License
 MIT
@@ -58,9 +74,12 @@ Edit
 
 ---
 
-Drop that into `README.md`, commit + push:
+### ✅ Now:
+
+1. Add it to `README.md`
+2. Commit + push:
 
 ```bash
 git add README.md
-git commit -m "Add README for product API"
+git commit -m "Update README with test coverage and API details"
 git push
