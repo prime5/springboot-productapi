@@ -102,3 +102,44 @@ Edit
 git add README.md
 git commit -m "Update README with test coverage and API details"
 git push
+
+Docker Support
+This project includes a complete Dockerfile and docker-compose.yml to run the Spring Boot app with MongoDB locally in containers.
+
+🔧 Build and Run
+bash
+Copy
+Edit
+./mvnw clean package -DskipTests
+docker compose up --build
+This will:
+
+Start MongoDB on localhost:27017
+
+Start the Spring Boot app on localhost:8080
+
+🧪 Test the API
+Check if the app is running:
+
+bash
+Copy
+Edit
+curl http://localhost:8080/api/products
+Add a product (requires Basic Auth):
+
+bash
+Copy
+Edit
+curl -X POST http://localhost:8080/api/products \
+  -u admin:secret123 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Docker Success",
+    "description": "Deployed in a container!",
+    "price": 123.45
+}'
+🔁 Tear Down
+bash
+Copy
+Edit
+docker compose down -v

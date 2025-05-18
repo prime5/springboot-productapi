@@ -1,0 +1,23 @@
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  productapi:
+    build: .
+    container_name: productapi
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=productdb
+
+volumes:
+  mongo-data:

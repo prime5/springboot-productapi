@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>24</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,11 +61,29 @@
 		</dependency>
 	</dependencies>
 
+
+
 	<build>
 		<plugins>
+			<!-- Force Java 21 compatibility -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>21</source>
+					<target>21</target>
+				</configuration>
+			</plugin>
+
+			<!-- Ensure correct Spring Boot entry point -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<mainClass>com.example.productapi.ProductapiApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
